@@ -9,7 +9,7 @@ struct Bank
     {
         balance = amount;
     }
-    mutex mtx1,mtx2;
+    mutex mtx;
 };
 void transfer(Bank &from,Bank &to,int amount)
 {
@@ -18,8 +18,13 @@ void transfer(Bank &from,Bank &to,int amount)
         cout <<"Cannot Transfer to same account";
         return;
     }
-    unique_lock lock1{from.mtx1,defer_lock};
-    unique_lock lock2{to.mtx2,defer_lock};
+    //if i use adopt_lock in unique_lock it will thrown run time error because it expects an locked mutex
+    /*
+    terminate called recursively
+    terminate called after throwing an instance of 'std::system_error'
+    */
+    unique_lock lock1{from.mtx,defer_lock};
+    unique_lock lock2{to.mtx,defer_lock};
     lock(lock1,lock2);
     from.balance-=amount;
     to.balance+=amount;   
