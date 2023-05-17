@@ -4,7 +4,7 @@
 int sharedStaticVariable = 0;
 
 void IncrementStaticVariable() {
-    for (int i = 0; i < 100000; ++i) {
+    for (int i = 0; i < 1000000; ++i) {
         sharedStaticVariable++;  // Increment the static variable
     }
 }
